@@ -52,7 +52,9 @@ Proyecto práctico orientado a automatización de pedidos para pequeños negocio
 ```bash
 python app.py
 ```
+## Vista del sistema
 
+![Pedidos](2026-03-31.png)
 ## Estructura escalable
 Esta estructura permite:
 - ✅ Separación de responsabilidades
