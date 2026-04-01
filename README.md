@@ -49,9 +49,12 @@ Proyecto práctico orientado a automatización de pedidos para pequeños negocio
 
 ## Cómo ejecutar
 
-```bash
-python app.py
-```
+1. Crear entorno virtual
+2. Instalar dependencias:
+   pip install -r requirements.txt
+3. Ejecutar:
+   python app.py
+
 
 ## Estructura escalable
 Esta estructura permite:

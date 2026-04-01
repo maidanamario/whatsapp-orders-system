@@ -1,9 +1,10 @@
 import requests
 
 url = "http://127.0.0.1:5000/mensaje"
-data = {"mensaje": "pollo 2kg"}
 
-response = requests.post(url, json=data)
-
-print("Status:", response.status_code)
-print("Respuesta:", response.text)
+mensajes = ["hola", "2", "pollo", "abc", "2kg"]
+for m in mensajes:
+    response = requests.post(url, json={"mensaje": m})
+    print("Enviado:", m)
+    print("Respuesta:", response.json())
+    print("------")
