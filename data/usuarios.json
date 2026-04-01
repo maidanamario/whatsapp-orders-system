@@ -3,5 +3,15 @@
         "state": "inicio",
         "producto": "",
         "cantidad": ""
+    },
+    "user1": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "user2": {
+        "state": "esperando_opcion",
+        "producto": "",
+        "cantidad": ""
     }
 }

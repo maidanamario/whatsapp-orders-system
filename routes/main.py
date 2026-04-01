@@ -48,10 +48,12 @@ def mensaje():
     Handle incoming messages for the chatbot.
 
     Processes user messages based on their current state, validates inputs,
-    and manages the order creation flow. Supports commands like 'hola' to reset
+    and manages the order creation flow with confirmation step. Supports commands like 'hola' to reset
     and '0' to cancel. Persists user state in JSON files.
 
-    Expects JSON payload with 'mensaje' key.
+    States: inicio, esperando_opcion, esperando_producto, esperando_cantidad, confirmando_pedido
+
+    Expects JSON payload with 'mensaje' and 'usuario' keys.
 
     Returns:
         dict: JSON response with 'respuesta' key containing the bot's reply.
@@ -59,15 +61,17 @@ def mensaje():
     try:
         data = request.get_json()
         if not data or not isinstance(data, dict):
-            return jsonify({"respuesta": "Error: Payload inválido. Envía un JSON con 'mensaje'."})
+            return jsonify({"respuesta": "Error: Payload inválido. Envía un JSON con 'mensaje' y 'usuario'."})
     except Exception:
         return jsonify({"respuesta": "Error: No se pudo procesar el mensaje."})
     
     mensaje = data.get("mensaje", "").strip().lower()
+    user_id = data.get("usuario")
+    if not user_id:
+        return jsonify({"respuesta": "Error: Campo 'usuario' requerido en el JSON."})
     if not mensaje:
         return jsonify({"respuesta": "Mensaje vacío. Escribe algo."})
     
-    user_id = "usuario1"
     users_file = "data/usuarios.json"
 
     def load_users():
@@ -101,7 +105,7 @@ def mensaje():
             uid (str): User ID.
 
         Returns:
-            dict: The user's state dictionary.
+            dict: The user's state dictionary with keys: state, producto, cantidad.
         """
         if uid not in users:
             users[uid] = {"state": "inicio", "producto": "", "cantidad": ""}
@@ -112,8 +116,8 @@ def mensaje():
 
     respuesta = "Opción no válida. Escribe hola para comenzar."
 
-    if mensaje == "hola":
-        user["state"] = "esperando_opcion"
+    if mensaje in ["hola", "menu", "inicio"]:
+        user["state"] = "inicio"
         user["producto"] = ""
         user["cantidad"] = ""
         respuesta = "1. Ver productos / 2. Hacer pedido (0 para cancelar)"
@@ -126,6 +130,17 @@ def mensaje():
         respuesta = "Proceso cancelado. 1. Ver productos / 2. Hacer pedido"
         save_users(users)
         return jsonify({"respuesta": respuesta})
+    
+    if user["state"] == "inicio":
+        if mensaje == "1":
+            respuesta = "Lista de productos: pollo, carne, cerdo. Escribe 2 para hacer pedido o 0 para cancelar."
+        elif mensaje == "2":
+                user["state"] = "esperando_producto"
+                respuesta = "Escribe el producto (0 para cancelar)"
+        else:
+                user["state"] = "esperando_opcion"
+                respuesta = "1. Ver productos / 2. Hacer pedido (0 para cancelar)"
+
     elif user["state"] == "esperando_opcion":
         if mensaje == "1":
             respuesta = "Lista de productos: pollo, carne, cerdo. Escribe 2 para hacer pedido o 0 para cancelar."
@@ -134,6 +149,7 @@ def mensaje():
             respuesta = "Escribe el producto (0 para cancelar)"
         else:
             respuesta = "Opción inválida. Escribe 1 o 2 (0 para cancelar)"
+
     elif user["state"] == "esperando_producto":
         if not mensaje:
             respuesta = "No se recibió producto. Escribe el producto (0 para cancelar)"
@@ -154,25 +170,37 @@ def mensaje():
             return jsonify({"respuesta": respuesta})
         
         user["cantidad"] = mensaje
-        order = {
-            "producto": user.get("producto", ""),
-            "cantidad": user.get("cantidad", ""),
-            "timestamp": datetime.now().isoformat()
-        }
-        pedidos_file = "data/pedidos.json"
-        if os.path.exists(pedidos_file):
-            with open(pedidos_file, 'r', encoding='utf-8') as f:
-                pedido_list = json.load(f)
-        else:
-            pedido_list = []
-        pedido_list.append(order)
-        with open(pedidos_file, 'w', encoding='utf-8') as f:
-            json.dump(pedido_list, f, indent=4)
+        user["state"] = "confirmando_pedido"
+        respuesta = f"Producto: {user['producto']}\nCantidad: {user['cantidad']}\n\n¿Confirmar pedido? (si/no)"
+    elif user["state"] == "confirmando_pedido":
+        if mensaje == "si":
+            order = {
+                "producto": user.get("producto", ""),
+                "cantidad": user.get("cantidad", ""),
+                "timestamp": datetime.now().isoformat()
+            }
+            pedidos_file = "data/pedidos.json"
+            if os.path.exists(pedidos_file):
+                with open(pedidos_file, 'r', encoding='utf-8') as f:
+                    pedido_list = json.load(f)
+            else:
+                pedido_list = []
+            pedido_list.append(order)
+            with open(pedidos_file, 'w', encoding='utf-8') as f:
+                json.dump(pedido_list, f, indent=4)
 
-        user["state"] = "inicio"
-        user["producto"] = ""
-        user["cantidad"] = ""
-        respuesta = "Pedido registrado. Escribe hola para iniciar otra vez."
+            user["state"] = "inicio"
+            user["producto"] = ""
+            user["cantidad"] = ""
+            respuesta = "Pedido registrado. ¿Querés hacer otro pedido? (1: ver productos / 2: pedir)"
+        elif mensaje == "no":
+            user["state"] = "inicio"
+            user["producto"] = ""
+            user["cantidad"] = ""
+            respuesta = "Pedido cancelado. ¿Querés hacer otro pedido? (1: ver productos / 2: pedir)"
+        
+        else:
+           respuesta = "Respuesta inválida. Escribí 'si' para confirmar o 'no' para cancelar."
 
     save_users(users)
 
