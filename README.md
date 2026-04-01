@@ -1,51 +1,79 @@
 # WhatsApp Orders System
-# Sistema de Pedidos por WhatsApp (Simulado)
+Sistema backend desarrollado con Flask que simula la automatización de pedidos por WhatsApp para pequeños negocios.
 
-Proyecto backend desarrollado con Flask que permite:
 
-- Simular recepción de mensajes tipo WhatsApp
-- Procesar pedidos
-- Guardar pedidos en JSON
+
+Permite:
+- Recibir mensajes como si fueran de WhatsApp
+- Guiar al usuario con un flujo tipo chatbot
+- Registrar pedidos (producto + cantidad)
+- Guardar datos en JSON
 - Visualizar pedidos en una interfaz web
+
+---
+
+## Ejemplo de uso
+
+Usuario:
+hola
+
+Bot:
+1. Ver productos / 2. Hacer pedido
+
+Usuario:
+2
+
+Bot:
+Escribe el producto
+
+Usuario:
+pollo
+
+Bot:
+Escribe la cantidad
+
+Usuario:
+2kg
+
+Bot:
+Pedido registrado
+
+---
+
 
 ## Tecnologías
 - Python
 - Flask
 
+
 ## Funcionalidades
-- Endpoint /mensaje
-- Guardado de pedidos
-- Vista /pedidos
 
-## Objetivo
-Proyecto práctico orientado a automatización de pedidos para pequeños negocios.
+- Endpoint `/mensaje` (chatbot)
+- Guardado de pedidos en JSON
+- Vista `/pedidos` para visualizar datos
+- Validación de inputs (ej: cantidad correcta)
+- Manejo de estado del usuario
 
+---
 
-## Estructura de Carpetas
+## 📁 Estructura del proyecto
 
 ### 📁 `routes/`
-**Propósito**: Define todas las rutas (endpoints) de la API
-- `__init__.py`: Inicializa y registra los blueprints
-- `orders.py`: Rutas relacionadas con pedidos
+Define los endpoints de la aplicación
 
 ### 📁 `services/`
-**Propósito**: Contiene la lógica de negocio (business logic)
-- `order_service.py`: Métodos para gestionar pedidos (crear, obtener, actualizar, eliminar)
-- Separa la lógica de negocios de las rutas para mejor mantenimiento
+Contiene la lógica de negocio
 
 ### 📁 `data/`
-**Propósito**: Almacena los datos (actualmente JSON)
-- `orders.json`: Almacena los pedidos en formato JSON
-- Fácil migración a base de datos en el futuro
+Almacenamiento de pedidos en JSON
 
 ### 📁 `templates/`
-**Propósito**: Archivos HTML para renderizar en el navegador
-- `base.html`: Template base para todas las páginas
-- Futuras páginas: index.html, orders.html, etc.
+Vistas HTML renderizadas
 
 ### 📁 `static/`
-**Propósito**: Archivos estáticos (CSS, JavaScript, imágenes)
-- Organizar estilos y scripts del cliente
+Archivos estáticos (CSS, JS, imágenes)
+
+---
 
 ## Cómo ejecutar
 
@@ -56,15 +84,14 @@ Proyecto práctico orientado a automatización de pedidos para pequeños negocio
    python app.py
 
 
-
-
 ## Vista del sistema
 ![Pedidos](2026-03-31.png)
 
-## Estructura escalable
-Esta estructura permite:
-- ✅ Separación de responsabilidades
-- ✅ Fácil agregar nuevas rutas
-- ✅ Código más limpio y mantenible
-- ✅ Migración a base de datos sin cambios mayores
-- ✅ Facilita testing
+## Objetivo
+Proyecto práctico orientado a automatizar pedidos para negocios pequeños y servir como base para futuros desarrollos más complejos (chatbots, integraciones, etc).
+
+## Posibles mejoras 
+- Multiusuario
+- Integración real con WhatsApp API
+- Base de datos (PostgreSQL / MongoDB)
+- Panel administrativo
