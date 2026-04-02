@@ -91,7 +91,26 @@ Archivos estáticos (CSS, JS, imágenes)
 Proyecto práctico orientado a automatizar pedidos para negocios pequeños y servir como base para futuros desarrollos más complejos (chatbots, integraciones, etc).
 
 ## Posibles mejoras 
-- Multiusuario
+- Multiusuario -echo
 - Integración real con WhatsApp API
 - Base de datos (PostgreSQL / MongoDB)
 - Panel administrativo
+
+## 🚀 Deploy online
+
+El sistema se encuentra desplegado en Render y disponible en:
+
+👉 https://whatsapp-orders-api-ruex.onrender.com
+
+### Endpoints disponibles
+
+- POST `/mensaje` → interacción con el chatbot
+- GET `/pedidos` → visualización de pedidos
+
+### Ejemplo de uso (POST /mensaje)
+
+```json
+{
+  "usuario": "user1",
+  "mensaje": "hola"
+}
