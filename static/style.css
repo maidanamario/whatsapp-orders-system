@@ -1,0 +1,290 @@
+/* ========================================
+   ESTILOS GENERALES DEL CHAT
+   ======================================== */
+
+* {
+    /* Resetear márgenes y padding por defecto */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Fondo oscuro para la página */
+    background-color: #0f0f0f;
+    /* Fuente legible y moderna */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Relleno para espacio alrededor */
+    padding: 20px;
+    /* Altura mínima para ocupar la pantalla completa */
+    min-height: 100vh;
+    /* Centrar contenido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ========================================
+   CONTENEDOR PRINCIPAL DEL CHAT
+   ======================================== */
+
+.chat-container {
+    /* Ancho máximo para no ser muy ancho en pantallas grandes */
+    max-width: 600px;
+    /* Ancho responsive */
+    width: 100%;
+    /* Altura fija para que quede tipo ventana */
+    height: 80vh;
+    /* Fondo blanco para contrastar */
+    background-color: #ffffff;
+    /* Esquinas redondeadas */
+    border-radius: 12px;
+    /* Sombra para efecto de profundidad */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* Flexbox para organizar elementos verticalmente */
+    display: flex;
+    flex-direction: column;
+    /* Evitar desbordamiento */
+    overflow: hidden;
+}
+
+/* ========================================
+   ENCABEZADO DEL CHAT
+   ======================================== */
+
+.chat-header {
+    /* Fondo verde tipo WhatsApp */
+    background-color: #25d366;
+    /* Relleno para espacio interno */
+    padding: 20px;
+    /* Color de texto blanco */
+    color: white;
+    /* Alineación de texto al centro */
+    text-align: center;
+    /* Sombra sutil */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header h1 {
+    /* Tamaño del título */
+    font-size: 24px;
+    /* Margen inferior */
+    margin-bottom: 5px;
+    /* Grosor del texto */
+    font-weight: 600;
+}
+
+.chat-header p {
+    /* Tamaño del subtítulo */
+    font-size: 14px;
+    /* Opacidad para que se vea más suave */
+    opacity: 0.9;
+}
+
+/* ========================================
+   ÁREA DE MENSAJES
+   ======================================== */
+
+.chat-messages {
+    /* Flexible para crecer y llenar espacio */
+    flex: 1;
+    /* Relleno para espacio entre mensajes y bordes */
+    padding: 20px;
+    /* Fondo gris claro */
+    background-color: #f5f5f5;
+    /* Permitir scroll si hay muchos mensajes */
+    overflow-y: auto;
+    /* Espacio entre items */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Personalizar barra de scroll */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #25d366;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #20ba5a;
+}
+
+/* ========================================
+   ESTILOS DE MENSAJES
+   ======================================== */
+
+.message {
+    /* Flexbox para alinear con el contenedor */
+    display: flex;
+    /* Animación de entrada suave */
+    animation: fadeIn 0.3s ease-in;
+    /* Margen para separación */
+    margin-bottom: 5px;
+}
+
+/* Animación de aparición de mensajes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mensajes del usuario (alineados a la derecha) */
+.message.user {
+    justify-content: flex-end;
+}
+
+/* Burbuja de mensaje del usuario */
+.message.user .bubble {
+    /* Fondo azul tipo WhatsApp */
+    background-color: #25d366;
+    /* Texto blanco */
+    color: white;
+}
+
+/* Mensajes del bot (alineados a la izquierda) */
+.message.bot {
+    justify-content: flex-start;
+}
+
+/* Burbuja de mensaje del bot */
+.message.bot .bubble {
+    /* Fondo gris claro */
+    background-color: #e0e0e0;
+    /* Texto gris oscuro */
+    color: #333;
+}
+
+/* Estilos comunes para burbujas de mensajes */
+.bubble {
+    /* Máximo ancho para no ser muy ancho */
+    max-width: 75%;
+    /* Relleno interno */
+    padding: 12px 16px;
+    /* Esquinas redondeadas */
+    border-radius: 18px;
+    /* Salto de palabra para textos largos */
+    word-wrap: break-word;
+    /* Preservar saltos de línea en textos con \n */
+    white-space: pre-wrap;
+    /* Tamaño del texto */
+    font-size: 14px;
+    /* Altura de línea para mejor lectura */
+    line-height: 1.4;
+    /* Sombra suave */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   ÁREA DE ENTRADA DE MENSAJES
+   ======================================== */
+
+.chat-input-area {
+    /* Relleno para espacio interno */
+    padding: 15px;
+    /* Fondo blanco */
+    background-color: #ffffff;
+    /* Borde superior sutil */
+    border-top: 1px solid #e0e0e0;
+    /* Flexbox para alinear input y botón */
+    display: flex;
+    gap: 10px;
+    /* Alineación vertical centrada */
+    align-items: center;
+}
+
+/* Input de texto para mensajes */
+.message-input {
+    /* Flexible para ocupar el espacio disponible */
+    flex: 1;
+    /* Relleno interno */
+    padding: 12px 15px;
+    /* Borde gris claro */
+    border: 1px solid #ddd;
+    /* Esquinas redondeadas */
+    border-radius: 25px;
+    /* Tamaño del texto */
+    font-size: 14px;
+    /* Familia de fuente */
+    font-family: inherit;
+    /* Outline cuando está enfocado */
+    outline: none;
+    /* Transición suave al enfocar */
+    transition: border-color 0.3s ease;
+}
+
+/* Cambio de borde al enfocar el input */
+.message-input:focus {
+    border-color: #25d366;
+}
+
+/* Botón de envío */
+.send-button {
+    /* Fondo verde */
+    background-color: #25d366;
+    /* Texto blanco */
+    color: white;
+    /* Borde ninguno */
+    border: none;
+    /* Relleno */
+    padding: 12px 25px;
+    /* Esquinas redondeadas */
+    border-radius: 25px;
+    /* Cursor tipo puntero */
+    cursor: pointer;
+    /* Tamaño del texto */
+    font-size: 14px;
+    /* Grosor del texto */
+    font-weight: 600;
+    /* Transición suave al pasar el mouse */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* Familia de fuente */
+    font-family: inherit;
+}
+
+/* Efecto hover en el botón */
+.send-button:hover {
+    background-color: #20ba5a;
+}
+
+/* Efecto activo (presionado) */
+.send-button:active {
+    transform: scale(0.95);
+}
+
+/* ========================================
+   RESPONSIVIDAD PARA MÓVILES
+   ======================================== */
+
+@media (max-width: 600px) {
+    /* Ajustar tamaño del contenedor en móviles */
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    /* Ajustar máximo ancho de burbuja en móviles */
+    .bubble {
+        max-width: 85%;
+    }
+
+    /* Ajustar tamaño de texto en móviles */
+    .chat-header h1 {
+        font-size: 20px;
+    }
+}

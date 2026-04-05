@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Sistema de Órdenes WhatsApp</title>
+    
+    <!-- Vincular hoja de estilos externa -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Contenedor principal del chat -->
+    <div class="chat-container">
+        <!-- Encabezado del chat -->
+        <div class="chat-header">
+            <h1>Sistema de Órdenes</h1>
+            <p>Chat de atención al cliente</p>
+        </div>
+        
+        <!-- Área de mensajes donde se muestran las conversaciones -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Los mensajes se agregan dinámicamente con JavaScript -->
+        </div>
+        
+        <!-- Área de entrada de mensajes -->
+        <div class="chat-input-area">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Escribe tu mensaje aquí..." 
+                class="message-input"
+                autocomplete="off"
+            >
+            <!-- Botón para enviar mensaje -->
+            <button 
+                id="sendButton" 
+                class="send-button"
+                onclick="enviarMensaje()"
+            >
+                Enviar
+            </button>
+        </div>
+    </div>
+    
+    <!-- Vincular archivo JavaScript externo -->
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

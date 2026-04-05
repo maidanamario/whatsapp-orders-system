@@ -13,5 +13,15 @@
         "state": "esperando_opcion",
         "producto": "",
         "cantidad": ""
+    },
+    "web_user_18981": {
+        "state": "confirmando_pedido",
+        "producto": "pollo",
+        "cantidad": "5kg"
+    },
+    "web_user_39347": {
+        "state": "esperando_opcion",
+        "producto": "",
+        "cantidad": ""
     }
 }

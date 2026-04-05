@@ -223,3 +223,15 @@ def pedidos():
     else:
         orders = []
     return render_template('pedidos.html', orders=orders)
+
+@main_bp.route('/chat')
+def chat():
+    """
+    Render the chatbot interface.
+
+    Displays the web-based chat interface for users to interact with the order system.
+
+    Returns:
+        str: Rendered HTML template for the chat interface.
+    """
+    return render_template('chat.html')
