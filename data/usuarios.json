@@ -7,12 +7,14 @@
     "user1": {
         "state": "inicio",
         "producto": "",
-        "cantidad": ""
+        "cantidad": "",
+        "carrito": []
     },
     "user2": {
-        "state": "esperando_opcion",
+        "state": "inicio",
         "producto": "",
-        "cantidad": ""
+        "cantidad": "",
+        "carrito": []
     },
     "web_user_18981": {
         "state": "confirmando_pedido",
@@ -23,5 +25,161 @@
         "state": "esperando_opcion",
         "producto": "",
         "cantidad": ""
+    },
+    "web_user_86964": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_16735": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_43566": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_28277": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_51603": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_21114": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "test_user_001": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": ""
+    },
+    "web_user_3795": {
+        "state": "confirmando_pedido",
+        "producto": "pollo",
+        "cantidad": "2kg",
+        "carrito": []
+    },
+    "web_user_57754": {
+        "state": "carrito_abierto",
+        "producto": "",
+        "cantidad": "",
+        "carrito": [
+            {
+                "producto": "carne",
+                "cantidad": "2kg"
+            },
+            {
+                "producto": "carne",
+                "cantidad": "2kg"
+            }
+        ]
+    },
+    "web_user_74895": {
+        "state": "carrito_abierto",
+        "producto": "",
+        "cantidad": "",
+        "carrito": [
+            {
+                "producto": "pollo",
+                "cantidad": "2kg"
+            },
+            {
+                "producto": "pollo",
+                "cantidad": "2kg"
+            }
+        ]
+    },
+    "web_user_40714": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_99494": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_21854": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_84930": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_58910": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_73289": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_53320": {
+        "state": "esperando_producto",
+        "producto": "",
+        "cantidad": "",
+        "carrito": [
+            {
+                "producto": "pollo",
+                "cantidad": "2kg"
+            },
+            {
+                "producto": "pollo",
+                "cantidad": "3kg"
+            }
+        ]
+    },
+    "web_user_99785": {
+        "state": "carrito_abierto",
+        "producto": "",
+        "cantidad": "",
+        "carrito": [
+            {
+                "producto": "cerdo",
+                "cantidad": "100kg"
+            }
+        ]
+    },
+    "web_user_43929": {
+        "state": "carrito_abierto",
+        "producto": "",
+        "cantidad": "",
+        "carrito": [
+            {
+                "producto": "pollo",
+                "cantidad": "500g"
+            }
+        ]
+    },
+    "web_user_94551": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
+    },
+    "web_user_58969": {
+        "state": "inicio",
+        "producto": "",
+        "cantidad": "",
+        "carrito": []
     }
 }

@@ -153,6 +153,46 @@ http://localhost:5000/chat
 
 ---
 
+## 🛒 Sistema de Carrito v1.0 ⭐ NUEVO
+
+### Características Principales
+
+**Detección Automática Inteligente**
+- Detecta múltiples productos en un solo mensaje
+- Ejemplo: `"2kg carne, 1kg pollo, 500g cerdo"`
+- Asigna correctamente cada cantidad a su producto
+
+**Carrito Visual**
+- Muestra todos los items agregados
+- Opciones: agregar más (`"3"`), confirmar (`"confirmar"`), cancelar (`"cancelar"`)
+- Interfaz intuitiva y clara
+
+**3 Flujos de Entrada**
+1. **Detección Automática** (Rápido): `"2kg carne, 1kg pollo"` → confirmar
+2. **Paso a Paso** (Tradicional): `"2"` → `"pollo"` → `"2kg"` → `"si"`
+3. **Híbrido** (Flexible): Mezcla automático y paso a paso
+
+### Documentación del Carrito
+
+Para información detallada sobre el sistema de carrito:
+
+- 📖 **`INICIO_RAPIDO.md`** - Guía rápida (5 min)
+- 📚 **`CARRITO_SISTEMA.md`** - Documentación técnica completa
+- 🔄 **`FLUJO_ESTADOS.md`** - Diagrama visual de estados
+- 📋 **`CAMBIOS_CARRITO.md`** - Resumen de cambios implementados
+- ✅ **`IMPLEMENTACION_COMPLETA.md`** - Resumen ejecutivo
+
+### Testing
+
+Ejecutar suite de pruebas:
+```bash
+python test_carrito.py
+```
+
+Resultado esperado: **✅ 17/17 PASS (100%)**
+
+---
+
 ## Validaciones
 
 ### Entrada de Mensajes

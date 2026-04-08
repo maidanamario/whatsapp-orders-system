@@ -201,10 +201,18 @@ body {
     background-color: #ffffff;
     /* Borde superior sutil */
     border-top: 1px solid #e0e0e0;
-    /* Flexbox para alinear input y botón */
+    /* Padding alrededor */
+    padding: 10px;
+    /* Flexbox vertical para organizar elementos */
     display: flex;
-    gap: 10px;
-    /* Alineación vertical centrada */
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Wrapper para input y validador */
+.input-wrapper {
+    display: flex;
+    gap: 8px;
     align-items: center;
 }
 
@@ -231,6 +239,40 @@ body {
 /* Cambio de borde al enfocar el input */
 .message-input:focus {
     border-color: #25d366;
+    box-shadow: 0 0 8px rgba(37, 211, 102, 0.3);
+}
+
+/* Indicador de validación */
+.validation-indicator {
+    font-size: 18px;
+    height: 20px;
+    min-width: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.validation-indicator.valid {
+    color: #25d366;
+    animation: pulse 0.5s ease;
+}
+
+.validation-indicator.invalid {
+    color: #e74c3c;
+    animation: shake 0.3s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
 /* Botón de envío */
@@ -268,6 +310,134 @@ body {
 }
 
 /* ========================================
+   SUGERENCIAS Y AUTOCOMPLETADO
+   ======================================== */
+
+/* Caja de sugerencias */
+.suggestions-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 5px;
+    min-height: 0;
+    max-height: 50px;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.suggestions-box::-webkit-scrollbar {
+    height: 4px;
+}
+
+.suggestions-box::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 2px;
+}
+
+/* Botón de sugerencia genérico */
+.suggestion-button {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.suggestion-button:hover {
+    background-color: #efefef;
+    border-color: #25d366;
+    color: #25d366;
+    transform: translateY(-2px);
+}
+
+.suggestion-button:active {
+    transform: scale(0.95);
+}
+
+/* Botón de ejemplo (cantidad) */
+.example-button {
+    background-color: #f0fdf4;
+    border-color: #25d366;
+    color: #25d366;
+}
+
+.example-button:hover {
+    background-color: #dcfce7;
+}
+
+/* Botón de acción rápida (inicio) */
+.quick-action {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+    color: #1976d2;
+}
+
+.quick-action:hover {
+    background-color: #bbdefb;
+}
+
+/* Botón de autocompletado */
+.autocomplete-button {
+    background-color: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+.autocomplete-button:hover {
+    background-color: #fde68a;
+}
+
+/* Mensaje sin sugerencias */
+.no-suggestions {
+    padding: 6px 12px;
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* ========================================
+   ACCIONES RÁPIDAS (QUICK ACTIONS)
+   ======================================== */
+
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 5px 10px 0;
+    justify-content: center;
+}
+
+.quick-action-button {
+    padding: 8px 16px;
+    border: 1px solid #25d366;
+    border-radius: 20px;
+    background-color: #f0fdf4;
+    color: #25d366;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.quick-action-button:hover {
+    background-color: #25d366;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+}
+
+.quick-action-button:active {
+    transform: scale(0.95);
+}
+
+/* ========================================
    RESPONSIVIDAD PARA MÓVILES
    ======================================== */
 
@@ -286,5 +456,15 @@ body {
     /* Ajustar tamaño de texto en móviles */
     .chat-header h1 {
         font-size: 20px;
+    }
+    
+    /* Hacer sugerencias más compactas en móviles */
+    .suggestions-box {
+        max-height: 45px;
+    }
+    
+    .suggestion-button {
+        font-size: 11px;
+        padding: 5px 10px;
     }
 }

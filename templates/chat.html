@@ -23,20 +23,37 @@
             <!-- Los mensajes se agregan dinámicamente con JavaScript -->
         </div>
         
+        <!-- Área de botones de acciones rápidas -->
+        <div class="quick-actions" id="quickActions">
+            <!-- Los botones se generan dinámicamente según el estado -->
+        </div>
+        
         <!-- Área de entrada de mensajes -->
         <div class="chat-input-area">
-            <input 
-                type="text" 
-                id="messageInput" 
-                placeholder="Escribe tu mensaje aquí..." 
-                class="message-input"
-                autocomplete="off"
-            >
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Escribe tu mensaje aquí..." 
+                    class="message-input"
+                    autocomplete="off"
+                    aria-label="Campo de entrada de mensajes"
+                >
+                <!-- Indicador de validación -->
+                <span class="validation-indicator" id="validationIndicator"></span>
+            </div>
+            
+            <!-- Área de sugerencias/autocompletado -->
+            <div class="suggestions-box" id="suggestionsBox">
+                <!-- Las sugerencias se generan dinámicamente -->
+            </div>
+            
             <!-- Botón para enviar mensaje -->
             <button 
                 id="sendButton" 
                 class="send-button"
                 onclick="enviarMensaje()"
+                aria-label="Enviar mensaje"
             >
                 Enviar
             </button>

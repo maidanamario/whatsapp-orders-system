@@ -10,6 +10,63 @@ const usuarioId = 'web_user_' + Math.floor(Math.random() * 100000);
 // Evita que se envíen múltiples mensajes al mismo tiempo
 let enviando = false;
 
+// Estado actual del chatbot (será actualizado dinámicamente)
+let estadoActual = "inicio";
+
+// Diccionario de productos disponibles
+const productos = {
+    "1": { nombre: "pollo", emoji: "🍗", alias: ["pollo", "p", "chicken"] },
+    "2": { nombre: "carne", emoji: "🥩", alias: ["carne", "c", "beef", "vacuno"] },
+    "3": { nombre: "cerdo", emoji: "🐷", alias: ["cerdo", "ch", "pork"] }
+};
+
+// Configuración de sugerencias según estado
+const sugerenciasConfig = {
+    "inicio": {
+        tipo: "botones",
+        opciones: [
+            { texto: "Ver productos", valor: "1", emoji: "📦" },
+            { texto: "Hacer pedido", valor: "2", emoji: "🛒" },
+            { texto: "Ayuda", valor: "ayuda", emoji: "❓" }
+        ]
+    },
+    "esperando_opcion": {
+        tipo: "botones",
+        opciones: [
+            { texto: "Ver productos", valor: "1", emoji: "📦" },
+            { texto: "Hacer pedido", valor: "2", emoji: "🛒" }
+        ]
+    },
+    "esperando_producto": {
+        tipo: "autocompletado",
+        opciones: Object.values(productos).map((p, i) => ({
+            texto: `${p.emoji} ${p.nombre.charAt(0).toUpperCase() + p.nombre.slice(1)}`,
+            valor: String(i + 1),
+            keywords: p.alias
+        })),
+        placeholder: "Ej: pollo, carne, cerdo"
+    },
+    "esperando_cantidad": {
+        tipo: "ejemplos",
+        opciones: [
+            { texto: "1kg", valor: "1kg", emoji: "⚖️" },
+            { texto: "2kg", valor: "2kg", emoji: "⚖️" },
+            { texto: "500g", valor: "500g", emoji: "⚖️" },
+            { texto: "1.5kg", valor: "1.5kg", emoji: "⚖️" }
+        ],
+        placeholder: "Ej: 1kg, 2kg, 500g"
+    },
+    "confirmando_pedido": {
+        tipo: "botones",
+        opciones: [
+            { texto: "Sí, confirmar", valor: "si", emoji: "✅" },
+            { texto: "No, cancelar", valor: "no", emoji: "❌" },
+            { texto: "Cambiar producto", valor: "producto", emoji: "🔄" },
+            { texto: "Cambiar cantidad", valor: "cantidad", emoji: "⚖️" }
+        ]
+    }
+};
+
 /* ========================================
    INICIALIZACIÓN
    ======================================== */
@@ -33,8 +90,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Enviar mensaje al hacer click en botón
     botonEnviar.addEventListener('click', enviarMensaje);
     
+    // Escuchar cambios en el input para sugerencias inteligentes
+    inputMensaje.addEventListener('input', function(evento) {
+        actualizarSugerencias(evento.target.value);
+    });
+    
+    // Mostrar sugerencias iniciales
+    mostrarSugerenciasIniciales();
+    
     // Mostrar mensaje de bienvenida del bot
-    mostrarMensajeBot('¡Hola! Bienvenido al sistema de órdenes. Escribe "hola" para comenzar.');
+    mostrarMensajeBot('¡Hola! 👋 Bienvenido al sistema de órdenes. Escribe "hola" para comenzar.');
 });
 
 /* ========================================
@@ -106,6 +171,15 @@ function enviarMensaje() {
         const respuestaBot = datos.respuesta;
         // Mostrar respuesta en pantalla
         mostrarMensajeBot(respuestaBot);
+        
+        // Actualizar estado si el servidor lo proporciona
+        if (datos.estado) {
+            estadoActual = datos.estado;
+        }
+        
+        // Actualizar sugerencias y acciones rápidas
+        mostrarSugerenciasIniciales();
+        actualizarAccionesRapidas();
     })
     // Manejar errores
     .catch(error => {
@@ -208,4 +282,132 @@ function hacerScrollAlFinal() {
     // Realizar scroll al final del contenedor
     // scrollHeight es la altura total del contenido
     contenedorMensajes.scrollTop = contenedorMensajes.scrollHeight;
+}
+
+/* ========================================
+   INPUT INTELIGENTE - SUGERENCIAS
+   ======================================== */
+
+/**
+ * Muestra las sugerencias iniciales según el estado
+ * Se llama al iniciar y después de cada respuesta del bot
+ */
+function mostrarSugerenciasIniciales() {
+    const config = sugerenciasConfig[estadoActual];
+    if (!config) return;
+    
+    const caja = document.getElementById('suggestionsBox');
+    caja.innerHTML = '';
+    
+    if (config.tipo === "botones") {
+        config.opciones.forEach(opcion => {
+            const boton = document.createElement('button');
+            boton.className = 'suggestion-button quick-action';
+            boton.innerHTML = `${opcion.emoji} ${opcion.texto}`;
+            boton.onclick = () => seleccionarSugerencia(opcion.valor);
+            caja.appendChild(boton);
+        });
+    } else if (config.tipo === "ejemplos") {
+        config.opciones.forEach(opcion => {
+            const boton = document.createElement('button');
+            boton.className = 'suggestion-button example-button';
+            boton.textContent = opcion.texto;
+            boton.onclick = () => seleccionarSugerencia(opcion.valor);
+            caja.appendChild(boton);
+        });
+    }
+}
+
+/**
+ * Actualiza las sugerencias según lo que escribe el usuario
+ * Implementa:
+ * - Autocompletado de productos
+ * - Validación en tiempo real
+ * - Sugerencias contextuales
+ */
+function actualizarSugerencias(texto) {
+    const config = sugerenciasConfig[estadoActual];
+    if (!config || config.tipo !== "autocompletado") {
+        mostrarSugerenciasIniciales();
+        return;
+    }
+    
+    const caja = document.getElementById('suggestionsBox');
+    const input = texto.toLowerCase().trim();
+    
+    // Si está vacío, mostrar todas las opciones
+    if (!input) {
+        mostrarSugerenciasIniciales();
+        return;
+    }
+    
+    // Filtrar opciones que coincidan
+    const coincidencias = config.opciones.filter(opcion => 
+        opcion.keywords.some(k => k.startsWith(input))
+    );
+    
+    caja.innerHTML = '';
+    
+    if (coincidencias.length === 0) {
+        caja.innerHTML = '<div class="no-suggestions">No encontramos coincidencias</div>';
+        return;
+    }
+    
+    coincidencias.forEach(opcion => {
+        const boton = document.createElement('button');
+        boton.className = 'suggestion-button autocomplete-button';
+        boton.innerHTML = `${opcion.texto}`;
+        boton.onclick = () => seleccionarSugerencia(opcion.valor);
+        caja.appendChild(boton);
+    });
+    
+    // Validar si lo escrito es una cantidad válida
+    if (estadoActual === "esperando_cantidad") {
+        const esValido = /^\d+(?:\.\d+)?(kg|g)$/.test(input);
+        const validador = document.getElementById('validationIndicator');
+        
+        if (input.length > 0) {
+            if (esValido) {
+                validador.className = 'validation-indicator valid';
+                validador.textContent = '✅';
+            } else {
+                validador.className = 'validation-indicator invalid';
+                validador.textContent = '❌';
+            }
+        } else {
+            validador.className = 'validation-indicator';
+            validador.textContent = '';
+        }
+    }
+}
+
+/**
+ * Selecciona una sugerencia (usuario click en botón o sugerencia)
+ */
+function seleccionarSugerencia(valor) {
+    document.getElementById('messageInput').value = valor;
+    enviarMensaje();
+}
+
+/**
+ * Actualiza las acciones rápidas según el estado actual
+ * Se llama después de recibir respuesta del bot
+ */
+function actualizarAccionesRapidas() {
+    const config = sugerenciasConfig[estadoActual];
+    const caja = document.getElementById('quickActions');
+    
+    if (!config || config.tipo !== "botones") {
+        caja.innerHTML = '';
+        return;
+    }
+    
+    caja.innerHTML = '';
+    config.opciones.forEach(opcion => {
+        const boton = document.createElement('button');
+        boton.className = 'quick-action-button';
+        boton.innerHTML = `${opcion.emoji} ${opcion.texto}`;
+        boton.onclick = () => seleccionarSugerencia(opcion.valor);
+        caja.appendChild(boton);
+    });
 }
